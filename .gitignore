@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env.local
+.env.*.local
+*.log
+.DS_Store
+Thumbs.db
+Clip 1.mp4
+public/assets/hero/hero.mp4
+.vite/
+coverage/

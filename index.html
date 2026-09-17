@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f4f2" />
+    <meta
+      name="description"
+      content="A tactile 3D data story about New York City's outdoor dining program."
+    />
+    <title>New York Eats Outside</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.addEventListener('error', function (event) {
+        console.error(event.error || event.message);
+      });
+      window.addEventListener('unhandledrejection', function (event) {
+        console.error(event.reason);
+      });
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

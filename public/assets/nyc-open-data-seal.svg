@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">NYC Open Data live data seal</title>
+  <desc id="desc">A coral permit-style seal for the Dining Out NYC dataset.</desc>
+  <circle cx="160" cy="160" r="154" fill="#d9614d" stroke="#171715" stroke-width="7"/>
+  <circle cx="160" cy="160" r="126" fill="none" stroke="#f8f3ea" stroke-width="3" stroke-dasharray="5 7"/>
+  <path id="top" d="M54 162a106 106 0 0 1 212 0" fill="none"/>
+  <text fill="#f8f3ea" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">
+    <textPath href="#top" startOffset="50%" text-anchor="middle">NYC OPEN DATA</textPath>
+  </text>
+  <path id="bottom" d="M52 166a108 108 0 0 0 216 0" fill="none"/>
+  <text fill="#f8f3ea" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">
+    <textPath href="#bottom" startOffset="50%" text-anchor="middle">DINING OUT · LIVE</textPath>
+  </text>
+  <g fill="#f8f3ea">
+    <path d="M112 142h96v8h-96zM157 86h7v56h-7z"/>
+    <path d="M104 137c8-32 31-48 56-48s48 16 56 48H104z"/>
+    <circle cx="160" cy="89" r="5"/>
+    <path d="M123 151h9v44h-9zM188 151h9v44h-9zM112 191h96v8h-96z"/>
+  </g>
+  <text x="160" y="230" text-anchor="middle" fill="#171715" font-family="Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="2">OFFICIAL SOURCE</text>
+</svg>

@@ -1,0 +1,20 @@
+export const COLORS = {
+  paper: '#f3f4f2',
+  paperDeep: '#e7eae8',
+  paperLight: '#fbfbf8',
+  sidewalk: '#f7f8f5',
+  ink: '#151717',
+  inkSoft: '#606768',
+  coral: '#c45145',
+  roadwayRed: '#c45145',
+  roadwayRoof: '#a9473e',
+  mustard: '#d1bf72',
+  sage: '#9fb7a7',
+  lavender: '#b9acc5',
+  steel: '#bfc6c6',
+  steelDark: '#6f787a',
+  road: '#9ca2a1',
+  green: '#66836e',
+  taxi: '#e0b63e',
+  pigeon: '#929a9b'
+};
