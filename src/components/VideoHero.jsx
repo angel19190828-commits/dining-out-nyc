@@ -2,11 +2,12 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HERO_CAPTIONS } from '@/data/heroCaptions';
+import { publicUrl } from '@/publicUrl';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const VIDEO_SRC = '/assets/hero/hero-scroll.mp4';
-const POSTER_SRC = '/assets/hero/hero-poster.jpg';
+const VIDEO_SRC = publicUrl('assets/hero/hero-scroll.mp4');
+const POSTER_SRC = publicUrl('assets/hero/hero-poster.jpg');
 
 export const VIDEO_SCROLL_PX_PER_SECOND = 420;
 export const CHAPTER_APPROACH_PX = 520;

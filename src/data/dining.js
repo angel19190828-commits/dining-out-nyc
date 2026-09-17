@@ -1,3 +1,5 @@
+import { publicUrl } from '@/publicUrl';
+
 const DATASET_URL = 'https://data.cityofnewyork.us/Transportation/Dining-Out-NYC-Locations/fpeh-f7ci/about_data';
 const API_URL = 'https://data.cityofnewyork.us/resource/fpeh-f7ci.json';
 const VALID_BOROUGHS = new Set(['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island']);
@@ -105,9 +107,9 @@ export const formatDate = value => {
 
 export const loadStoryData = async () => {
   const [boroughs, snapshotMeta, cuisineEnrichment] = await Promise.all([
-    fetchJson('/data/boroughs.geojson'),
-    fetchJson('/data/snapshot-meta.json'),
-    fetchJson('/data/cuisine-enrichment.json').catch(() => ({ matches: {}, generatedAt: null }))
+    fetchJson(publicUrl('data/boroughs.geojson')),
+    fetchJson(publicUrl('data/snapshot-meta.json')),
+    fetchJson(publicUrl('data/cuisine-enrichment.json')).catch(() => ({ matches: {}, generatedAt: null }))
   ]);
 
   let source = 'live';
@@ -116,7 +118,7 @@ export const loadStoryData = async () => {
     rawLocations = await fetchJson(buildApiUrl());
   } catch (error) {
     source = 'snapshot';
-    rawLocations = await fetchJson('/data/fallback-locations.json');
+    rawLocations = await fetchJson(publicUrl('data/fallback-locations.json'));
     console.info('Using the bundled NYC Open Data snapshot.', error);
   }
 

@@ -10,6 +10,9 @@ import { useFrame } from '@react-three/fiber';
 import { MeshTransmissionMaterial, useGLTF } from '@react-three/drei';
 import { easing } from 'maath';
 import { COLORS } from '@/palette';
+import { publicUrl } from '@/publicUrl';
+
+const LENS_MODEL_URL = publicUrl('assets/3d/lens.glb');
 
 export default function FluidGlass({
   active = false,
@@ -19,7 +22,7 @@ export default function FluidGlass({
   onLensMove
 }) {
   const ref = useRef();
-  const { nodes } = useGLTF('/assets/3d/lens.glb');
+  const { nodes } = useGLTF(LENS_MODEL_URL);
   const {
     scale = 0.25,
     ior = 1.15,
@@ -68,4 +71,4 @@ export default function FluidGlass({
   );
 }
 
-useGLTF.preload('/assets/3d/lens.glb');
+useGLTF.preload(LENS_MODEL_URL);

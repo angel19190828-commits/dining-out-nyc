@@ -1,5 +1,7 @@
 # Dining Out NYC
 
+**Live site:** [angel19190828-commits.github.io/dining-out-nyc](https://angel19190828-commits.github.io/dining-out-nyc/)
+
 An interactive, landmark-first 3D guide to licensed outdoor dining across New York City. Visitors move from a scroll-directed film into a single continuous miniature world, choose a landmark, inspect nearby Sidewalk and Roadway restaurants, and assemble a simple day itinerary.
 
 ## Experience
