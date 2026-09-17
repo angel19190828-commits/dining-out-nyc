@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HERO_CAPTIONS } from '@/data/heroCaptions';
 import { publicUrl } from '@/publicUrl';
+import { dampScrubTime } from './heroScrub';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +23,9 @@ export const LANDMARK_HANDOFF_PX = 900;
 export const MAX_GESTURE_SCROLL_PX = 720;
 
 const APPROACH_SECONDS = .6;
+const SCRUB_SMOOTHING_SECONDS = .1;
+const SEEK_INTERVAL_MS = 1000 / 30;
+const SEEK_THRESHOLD_SECONDS = 1 / 90;
 const CAMERA_FRAMES = [
   { scale: 1.045, xPercent: 0, yPercent: 0 },
   { scale: 1.07, xPercent: -1.1, yPercent: -.45 },
@@ -49,40 +53,36 @@ export default function VideoHero({ reducedMotion }) {
     let syncFrame = 0;
     let built = false;
     let cancelled = false;
+    let displayedTime = 0;
+    let lastFrameAt = performance.now();
+    let lastSeekAt = 0;
     let gestureTotal = 0;
     let gestureDirection = 0;
     let lastWheelAt = 0;
     const mediaTarget = { time: 0 };
 
-    const scheduleSync = callback => {
-      if (video.requestVideoFrameCallback && !video.paused) syncFrame = video.requestVideoFrameCallback(callback);
-      else syncFrame = requestAnimationFrame(callback);
-    };
+    const scheduleSync = callback => { syncFrame = requestAnimationFrame(callback); };
 
     const cancelSync = () => {
       if (!syncFrame) return;
-      if (video.cancelVideoFrameCallback) video.cancelVideoFrameCallback(syncFrame);
       cancelAnimationFrame(syncFrame);
       syncFrame = 0;
     };
 
-    const syncVideo = () => {
+    const syncVideo = now => {
       if (cancelled) return;
       const target = Math.max(0, Math.min(video.duration || 0, mediaTarget.time));
-      const error = target - video.currentTime;
+      const deltaSeconds = (now - lastFrameAt) / 1000;
+      lastFrameAt = now;
+      displayedTime = dampScrubTime(displayedTime, target, deltaSeconds, SCRUB_SMOOTHING_SECONDS);
 
-      if (Math.abs(error) > 1.2) {
-        video.pause();
-        video.currentTime = target;
-      } else if (error > .045) {
-        video.playbackRate = Math.max(.35, Math.min(1.5, .35 + error * 1.25));
-        if (video.paused) video.play().catch(() => { video.currentTime = target; });
-      } else if (error < -.035) {
-        video.pause();
-        video.currentTime += error * .22;
-      } else if (!video.paused) {
-        video.pause();
-        if (Math.abs(error) < .08) video.currentTime = target;
+      if (
+        !video.seeking &&
+        now - lastSeekAt >= SEEK_INTERVAL_MS &&
+        Math.abs(displayedTime - video.currentTime) >= SEEK_THRESHOLD_SECONDS
+      ) {
+        video.currentTime = displayedTime;
+        lastSeekAt = now;
       }
       scheduleSync(syncVideo);
     };
@@ -124,6 +124,8 @@ export default function VideoHero({ reducedMotion }) {
       built = true;
       video.pause();
       video.currentTime = 0;
+      displayedTime = 0;
+      lastFrameAt = performance.now();
 
       const chapters = [...HERO_CAPTIONS].sort((a, b) => a.time - b.time);
       let measuredDistance = 0;
@@ -151,7 +153,7 @@ export default function VideoHero({ reducedMotion }) {
             trigger: section,
             start: 'top top',
             end: () => `+=${Math.ceil(measuredDistance)}`,
-            scrub: reducedMotion ? .08 : .55,
+            scrub: true,
             invalidateOnRefresh: true
           }
         });

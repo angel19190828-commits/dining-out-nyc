@@ -18,7 +18,12 @@ The project remains a Vite/React single-page story with one React Three Fiber Ca
 
 ## Completed in the latest pass
 
-- Hero now uses scroll-scrubbed chapter targets with continuous video catch-up instead of hard frame-by-frame assignment. Forward travel uses native playback-rate correction, stopping holds the frame, and reverse scroll eases the playhead backward.
+- Hero remains a true bidirectional scroll scrub: scroll advances, stopping freezes the visual position, and reverse scroll moves backward. It does not release independently playing video segments.
+- Replaced aggressive play/pause/current-time correction with `scroll position → target time → exponential interpolation`. The paused video receives at most one seek per decoded-frame interval and never queues a new seek while the decoder is busy.
+- The five unchanged chapter timestamps retain explicit approach, settle and caption plateau zones; the first plateau was measured at `3.273s` before and after an additional `480px` of scrolling.
+- Re-encoded the dedicated scroll asset with keyframes every `0.10s`, no B-frames and fast-start metadata. The original source remains untouched.
+
+- Hero uses scroll-scrubbed chapter targets with a paused-video damped target-time controller; there is no native forward playback or playback-rate correction.
 - The five existing caption timestamps remain unchanged. Each chapter has an approach, frozen settle, caption entrance, long readable hold and caption exit; a single continuous wheel/trackpad burst is capped at `720px`, so it cannot skip a complete chapter.
 - Restored the dimensional portal requested for the final 19.43-second frame. The portal expands through depth, then the `NEW YORK EATS OUTSIDE` title holds before the Landmark scene is revealed.
 - Restaurant selection is now immediate on the invisible proxy's left-button `pointerdown`. The visible InstancedMesh is excluded from raycasting, removing the unreliable pointer-up/click re-hit that caused models to hover but not open a Receipt in real use.
@@ -57,7 +62,7 @@ The project remains a Vite/React single-page story with one React Three Fiber Ca
 - `npm run build`: passed.
 - Manual desktop flow: landmark focus → second activation → Nearby → 3D restaurant → receipt → back.
 - Manual responsive flow: 390px Landmark Focus and Nearby, including objects, collapsed browser and Plan cue.
-- Real-browser Hero verification: the playhead froze at `3.279559s`; the first caption was fully visible during its hold; reverse scroll moved the playhead back to `2.592617s`.
+- Real-browser Hero verification: the playhead advanced to `1.976962s`, froze after input stopped, reversed to `0.555437s`, then held the first caption plateau at `3.273053s` while paused.
 - A fast 18-event wheel burst advanced only `840px` and reached about `2.33s`, confirming the gesture cap prevents a chapter skip.
 - The final-frame transition was inspected at `19.398333s`: the portal was visible over the held film, followed by the paper wash and opening title.
 - Manual 01→02 handoff audit: the final frame remains visible under an early paper wash, the Sidewalk/Roadway explanation becomes readable, the video dollies and fades, and the persistent Landmark Canvas resolves behind it without a blank frame.

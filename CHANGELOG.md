@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-09-17 — Smoothed bidirectional Hero scrubbing
+
+### What changed
+- Preserved the exact interaction model: scroll down advances, stopping holds the current frame, and scrolling up reverses.
+- Replaced the play/pause/playback-rate correction loop with a paused-video target-time controller. ScrollTrigger now provides the target time and an exponential damper eases the displayed time toward it without overshoot.
+- Limited decoded-frame seeks to roughly 30Hz and waits for the previous seek to finish, preventing repeated seek cancellation and decoder thrashing.
+- Kept the existing five chapter times and their approach, settle, caption-in, readable hold and caption-out plateaus.
+- Re-encoded `hero-scroll.mp4` from the original source with a 0.10-second closed GOP, no B-frames and fast-start metadata for more responsive forward and reverse seeking.
+
+### Validation
+- Local browser verification: the video remained paused throughout scrubbing, advanced from `0s` to `1.98s`, held exactly after input stopped, and reversed to `0.56s` without independent playback.
+- First chapter verification: the playhead settled at `3.273s`; another `480px` of caption-zone scrolling kept the frame unchanged while caption opacity reached `1`.
+- `npm test`: 16/16 passed.
+- `npm run build`: passed; the existing Three.js chunk warning remains.
+
 ## 2026-09-17 — Reliable 3D selection and scroll-scrubbed Hero chapters
 
 ### What changed
